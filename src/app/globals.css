@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Roastube design tokens                                             */
+/* Late-night show: black stage, white type, loud sticker accents.    */
+/* ------------------------------------------------------------------ */
+:root {
+  --stage: #000000;
+  --card: #141414;
+  --card-2: #1f1f1f;
+  --card-3: #2a2a2a;
+  --line: rgba(255, 255, 255, 0.09);
+  --text: #ffffff;
+  /* 60% white: 6.4:1 on black, 5.6:1 on --card. Use for secondary copy. */
+  --muted: rgba(255, 255, 255, 0.6);
+
+  /* Sticker colors */
+  --flame: #ff5a1f;
+  --toaster: #ffd23f;
+  --bubblegum: #ff8ad8;
+  --testcard: #3d5afe;
+  --paper: #fffdf7;
+  --ink: #000000;
+  --char: #3b1a0c;
+
+  /* Base64 so the inner url(#n) isn't mistaken for a fetchable resource by html-to-image. */
+  --grain: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxODAnIGhlaWdodD0nMTgwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjg1JyBudW1PY3RhdmVzPSczJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDEgMCAwIDAgMCAxIDAgMCAwIDAgMSAwIDAgMCAxLjQgLS40NScvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg==");
+  --static: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyNDAnIGhlaWdodD0nMjQwJz48ZmlsdGVyIGlkPSdzJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nLjk1JyBudW1PY3RhdmVzPScxJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDEgMCAwIDAgMCAuOTkgMCAwIDAgMCAuOTcgMS44IDAgMCAwIC0uNicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNzKScvPjwvc3ZnPg==");
+}
+
+@theme {
+  --color-*: initial;
+}
+
+@theme inline {
+  --color-stage: var(--stage);
+  --color-card: var(--card);
+  --color-card-2: var(--card-2);
+  --color-card-3: var(--card-3);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-flame: var(--flame);
+  --color-toaster: var(--toaster);
+  --color-bubblegum: var(--bubblegum);
+  --color-testcard: var(--testcard);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-char: var(--char);
+  --color-white: #ffffff;
+
+  /* SF Pro where it exists, Inter everywhere else. Rounded for buttons and captions. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", var(--font-inter),
+    "Segoe UI", system-ui, sans-serif;
+  --font-rounded: ui-rounded, "SF Pro Rounded", var(--font-nunito), var(--font-inter), sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.5;
+  --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --text-lg--line-height: 1.4;
+  --text-h2: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.03em;
+
+  --radius-card: 1.75rem;
+  --radius-inner: 1.125rem;
+
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                               */
+/* ------------------------------------------------------------------ */
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
+  background: var(--stage);
+}
+
+body {
+  background: var(--stage);
+  color: var(--text);
+  font-family: var(--font-sans);
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--flame);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--toaster);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Components                                                         */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-family: var(--font-rounded);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 120ms ease-out,
+      background-color 160ms ease-out,
+      opacity 160ms ease-out;
+  }
+  .btn:active {
+    transform: scale(0.96);
+  }
+  .btn:focus-visible {
+    border-radius: 9999px;
+  }
+  .btn[disabled] {
+    cursor: progress;
+    opacity: 0.6;
+  }
+  /* Black text on flame: 6.7:1. */
+  .btn-flame {
+    background: var(--flame);
+    color: var(--ink);
+  }
+  .btn-flame:hover {
+    background: #ff6d38;
+  }
+  .btn-light {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .btn-light:hover {
+    background: #ffffff;
+  }
+  .btn-ghost {
+    background: var(--card-2);
+    color: var(--text);
+  }
+  .btn-ghost:hover {
+    background: var(--card-3);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius-card);
+  }
+
+  .link {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+  }
+  .link:hover {
+    text-decoration-thickness: 2.5px;
+  }
+
+  /* Long-form legal copy. */
+  .legal > * + * {
+    margin-top: 1rem;
+  }
+  .legal h2 {
+    margin-top: 2.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .legal p,
+  .legal li {
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .legal strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .legal ul {
+    display: grid;
+    gap: 0.6rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .legal li::marker {
+    color: var(--flame);
+  }
+  .legal code {
+    font-size: 0.875em;
+    padding: 0.05em 0.35em;
+    border-radius: 0.35em;
+    background: var(--card-3);
+    color: var(--text);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Crispy idle behavior                                               */
+/* ------------------------------------------------------------------ */
+@keyframes flame-flicker {
+  0% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  25% {
+    transform: scale(0.94, 1.08) skewX(-4deg);
+  }
+  50% {
+    transform: scale(1.04, 0.94) skewX(3deg);
+  }
+  75% {
+    transform: scale(0.97, 1.05) skewX(-2deg);
+  }
+  100% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+}
+.crispy-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flame-flicker 0.9s steps(6, jump-none) infinite;
+}
+.crispy-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 70ms ease-in-out;
+}
+.crispy-eyes[data-blink="true"] {
+  transform: scaleY(0.08);
+}
+
+@keyframes static-jitter {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -60px 40px;
+  }
+  50% {
+    background-position: 50px -30px;
+  }
+  75% {
+    background-position: -20px -70px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+.tv-static {
+  background-color: var(--ink);
+  background-image: var(--static);
+  animation: static-jitter 0.24s steps(4) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crispy-flame,
+  .tv-static,
+  .animate-float {
+    animation: none;
+  }
+  .btn,
+  .btn:active {
+    transition: none;
+    transform: none;
+  }
+}
