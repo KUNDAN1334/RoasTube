@@ -7,7 +7,8 @@ import { ROAST_JSON_SCHEMA, RoastSchema } from "@/lib/roast/schema";
 import { isSensitive } from "@/lib/roast/sensitive";
 import { baseBrainrotScore, computeStats, exhibits, settleScore } from "@/lib/roast/stats";
 import { normalizeVideo, parseDuration, type Video } from "@/lib/roast/youtube-data";
-import type { Roast } from "@/lib/types";
+import type { Roast, RoastResult } from "@/lib/types";
+import { usageDay, usageFields, usageKeys } from "@/lib/usage";
 
 const video = (over: Partial<Video> = {}): Video => ({
   title: "A perfectly normal video",
@@ -154,6 +155,7 @@ describe("pipeline", () => {
       fetchAvatar: async () => null,
       allowRoast: async () => true,
       generate: async () => roast,
+      recordRoast: async () => {},
       classifyError: () => "unknown",
       ...over,
     };
@@ -251,5 +253,32 @@ describe("pipeline", () => {
       runRoastPipeline({ intensity: "toasty", takeout: null, fallbackName: "Sam" }, deps({ fetchChannel: async () => ({ title: null, thumbnailUrl: null }) })),
     );
     assert.equal(events.at(-1)?.result?.profile.name, "Sam");
+  });
+
+  it("counts finished roasts only", async () => {
+    const counted: RoastResult[] = [];
+    const recordRoast = async (r: RoastResult) => void counted.push(r);
+    const input = { intensity: "extra_crispy", takeout: null, fallbackName: null } as const;
+    await collect(runRoastPipeline(input, deps({ recordRoast })));
+    await collect(runRoastPipeline(input, deps({ recordRoast, allowRoast: async () => false })));
+    await collect(runRoastPipeline(input, deps({ recordRoast, generate: async () => { throw new Error("boom"); } })));
+    assert.equal(counted.length, 1);
+    assert.equal(counted[0].intensity, "extra_crispy");
+  });
+});
+
+describe("usage counts", () => {
+  it("files counts under the UTC day", () => {
+    assert.equal(usageDay(new Date("2026-10-17T23:30:00Z")), "2026-10-17");
+    assert.equal(usageDay(new Date("2026-10-17T23:30:00-05:00")), "2026-10-18");
+    assert.deepEqual(usageKeys("2026-10-17"), {
+      counts: "roastube:usage:counts:2026-10-17",
+      accounts: "roastube:usage:accounts:2026-10-17",
+    });
+  });
+
+  it("bumps the level, and nuclear only when Takeout was used", () => {
+    assert.deepEqual(usageFields("toasty", false), ["roasts", "toasty"]);
+    assert.deepEqual(usageFields("extra_crispy", true), ["roasts", "extra_crispy", "nuclear"]);
   });
 });

@@ -3,5 +3,5 @@
 export const SITE = {
   name: "Roastube",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "privacy@example.com",
-  policyUpdated: "October 16, 2026",
+  policyUpdated: "October 17, 2026",
 };

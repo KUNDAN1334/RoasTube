@@ -8,6 +8,7 @@ import { demoRoast } from "@/lib/server/demo-roast";
 import { RoastGenerationError } from "@/lib/roast/model-fallback";
 import { generateRoast } from "@/lib/server/gemini";
 import { takeRoastAllowance } from "@/lib/server/ratelimit";
+import { recordRoast } from "@/lib/server/usage";
 import {
   avatarDataUrl,
   fetchLikedVideos,
@@ -116,6 +117,7 @@ export async function POST(req: NextRequest) {
       fetchAvatar: (url) => avatarDataUrl(url, signal),
       allowRoast: () => takeRoastAllowance(googleId),
       generate: (digest) => generateRoast(digest, signal),
+      recordRoast: (result) => recordRoast(googleId, result),
       classifyError,
     },
   );

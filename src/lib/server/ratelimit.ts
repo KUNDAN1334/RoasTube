@@ -1,7 +1,6 @@
 import "server-only";
-import { createHash } from "node:crypto";
 import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { accountHash, getRedis } from "./redis";
 
 const ROASTS_PER_DAY = 3;
 
@@ -10,11 +9,10 @@ let limiter: Ratelimit | null | undefined;
 /** Only exists when Upstash is configured; otherwise roasts aren't limited. */
 function getLimiter() {
   if (limiter !== undefined) return limiter;
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  limiter = url && token
+  const redis = getRedis();
+  limiter = redis
     ? new Ratelimit({
-        redis: new Redis({ url, token }),
+        redis,
         limiter: Ratelimit.fixedWindow(ROASTS_PER_DAY, "1 d"),
         prefix: "roastube:roasts",
       })
@@ -26,9 +24,8 @@ function getLimiter() {
 export async function takeRoastAllowance(googleId: string): Promise<boolean> {
   const rl = getLimiter();
   if (!rl) return true;
-  const key = createHash("sha256").update(`roastube:${googleId}`).digest("hex");
   try {
-    const { success } = await rl.limit(key);
+    const { success } = await rl.limit(accountHash(googleId));
     return success;
   } catch (err) {
     // If Redis is down, don't block roasts over it.

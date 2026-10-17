@@ -7,12 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "usage": "node --import tsx scripts/usage.ts",
     "test": "node --import tsx --test tests/roast-logic.test.ts tests/takeout-and-stream.test.ts tests/model-fallback.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.30.0",
     "@upstash/ratelimit": "^2.2.0",
     "@upstash/redis": "^1.39.0",
+    "@vercel/analytics": "^2.0.1",
     "fflate": "^0.8.3",
     "html-to-image": "^1.11.13",
     "motion": "^14.3.0",

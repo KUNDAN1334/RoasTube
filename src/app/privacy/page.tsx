@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
-  description: "What Roastube reads, what it sends to the AI, and what it keeps (nothing).",
+  description: "What Roastube reads, what it sends to the AI, and what it keeps (none of your data).",
 };
 
 export default function PrivacyPage() {
@@ -13,8 +13,8 @@ export default function PrivacyPage() {
       <p>
         Roastube is a comedy app. You sign in with Google, it reads your YouTube activity, and an
         AI writes a roast of your viewing habits. This page explains exactly what that involves.
-        The short version: read-only access, a summary goes to the AI, nothing is stored on our
-        servers.
+        The short version: read-only access, a summary goes to the AI, and none of your data is
+        stored on our servers.
       </p>
 
       <h2>What we ask Google for</h2>
@@ -100,8 +100,8 @@ export default function PrivacyPage() {
       <h2>What we store</h2>
       <ul>
         <li>
-          <strong>On our servers: nothing.</strong> No database, no copies of your YouTube data, no
-          saved roasts.
+          <strong>On our servers: none of your data.</strong> No copies of your YouTube data, no
+          saved roasts, and no list of who has used Roastube.
         </li>
         <li>
           <strong>In your browser:</strong> your latest roast is saved in your browser&apos;s local
@@ -119,6 +119,23 @@ export default function PrivacyPage() {
           <strong>Rate limiting:</strong> to keep the free AI quota fair, we may count roasts per
           account per day. That counter is keyed by a one-way hash of your Google account ID and
           expires within 24 hours.
+        </li>
+        <li>
+          <strong>Usage counts:</strong> we count how many roasts are made each day, which level
+          was picked and whether nuclear mode was used. To estimate how many different accounts
+          made roasts, the same one-way hash goes into a counting method (HyperLogLog) that keeps
+          only an approximate total, not the hashes, so it can&apos;t list or look up anyone. Daily
+          counts are deleted after about 13 months.
+        </li>
+        <li>
+          <strong>Visitor analytics:</strong> we use{" "}
+          <a href="https://vercel.com/docs/analytics/privacy-policy" className="link text-text">
+            Vercel Web Analytics
+          </a>{" "}
+          to count page views. Each view records the page, the site you came from, your approximate
+          location (country, region, city), browser, operating system and device type. It uses no
+          cookies and isn&apos;t linked to your Google account; visits are told apart by a hash of
+          the request that is discarded after 24 hours.
         </li>
         <li>
           <strong>Hosting logs:</strong> our host keeps standard request logs (like IP address and

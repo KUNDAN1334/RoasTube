@@ -153,7 +153,8 @@ YouTube's API doesn't expose watch or search history, but Google Takeout does. D
 | AI | Google Gen AI SDK (`@google/genai`), Gemini 3.8 Flash with 3.5 Flash-Lite fallback |
 | Validation | zod 4 |
 | Data | YouTube Data API v3 via plain `fetch` |
-| Rate limiting | Upstash Redis + `@upstash/ratelimit` (optional) |
+| Rate limiting and usage counts | Upstash Redis + `@upstash/ratelimit` (optional) |
+| Analytics | Vercel Web Analytics (cookieless page views) |
 | Motion | motion (Framer Motion) |
 | Share images | html-to-image, Web Share API, Clipboard API |
 | Takeout | fflate (in-browser unzip) |
@@ -185,7 +186,7 @@ Copy `.env.example` to `.env.local`:
 | `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | Yes | Google OAuth client. Setting the ID turns demo mode off. |
 | `GEMINI_API_KEY` | Yes | Writes the roasts. Server-only. |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | For launch | Shown in the privacy policy and terms. |
-| `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | No | Enables 3 roasts per account per day. |
+| `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | No | Enables 3 roasts per account per day and anonymous usage counts. |
 | `ROASTUBE_DEMO` | No | `1` forces demo mode. Never turns on by itself in production. |
 
 <details>
@@ -206,10 +207,12 @@ Copy `.env.example` to `.env.local`:
 </details>
 
 <details>
-<summary><b>Gemini and rate limiting</b></summary>
+<summary><b>Gemini, rate limiting and usage</b></summary>
 
 - Create a key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Check the rate limits for `gemini-3.8-flash` and `gemini-3.5-flash-lite` in AI Studio: free-tier limits are low, and a traffic spike will show "the roast oven is full".
 - For rate limiting, create an [Upstash](https://upstash.com) Redis database and copy its REST URL and token. Accounts are keyed by a one-way hash of the Google ID, and if Redis is unreachable, roasts aren't blocked.
+- The same database keeps anonymous usage counts: roasts per day by level, and a HyperLogLog estimate of distinct accounts (no IDs are stored). Run `npm run usage` to print them.
+- For page views, enable **Analytics** on the Vercel project. The `<Analytics />` component is already in the root layout.
 
 </details>
 
@@ -222,6 +225,7 @@ Copy `.env.example` to `.env.local`:
 | `npm start` | Serve the production build |
 | `npm run lint` | ESLint |
 | `npm test` | Logic tests (no network or keys needed) |
+| `npm run usage` | Roasts and distinct accounts per day, read from Upstash (`npm run usage -- 30` for 30 days) |
 
 <details>
 <summary><b>Previewing every state in demo mode</b></summary>

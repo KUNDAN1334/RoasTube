@@ -16,6 +16,8 @@ export type PipelineDeps = {
   /** Consumes one roast from the daily allowance; false when it's used up. */
   allowRoast: () => Promise<boolean>;
   generate: (digest: string) => Promise<Roast>;
+  /** Adds a finished roast to the anonymous usage counts. Must not throw. */
+  recordRoast: (result: RoastResult) => Promise<void>;
   /** Maps a thrown error to the state the UI should show. */
   classifyError: (err: unknown) => RoastErrorCode;
 };
@@ -92,6 +94,8 @@ export async function* runRoastPipeline(
       createdAt: new Date().toISOString(),
     };
     yield { type: "done", result };
+    // Counted after the result is on its way, so it never slows a roast down.
+    await deps.recordRoast(result);
   } catch (err) {
     yield { type: "error", code: deps.classifyError(err) };
   }

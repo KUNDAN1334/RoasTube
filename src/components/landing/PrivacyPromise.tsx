@@ -10,8 +10,8 @@ const PROMISES = [
     body: "The AI gets stats and video titles. Never your name, email or channel ID.",
   },
   {
-    title: "Nothing stored",
-    body: "No database. Your roast lives in your browser and nowhere else.",
+    title: "Nothing of yours stored",
+    body: "No copies of your YouTube data, no saved roasts. Your roast lives in your browser and nowhere else.",
   },
   {
     title: "Leave anytime",

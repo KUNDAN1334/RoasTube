@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Nunito, Roboto } from "next/font/google";
 import "./globals.css";
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s · Roastube",
   },
   description:
-    "Sign in with Google and Crispy, a TV that's seen too much, roasts your personality based on your YouTube likes, subscriptions and playlists. Read-only. Nothing is saved.",
+    "Sign in with Google and Crispy, a TV that's seen too much, roasts your personality based on your YouTube likes, subscriptions and playlists. Read-only. Your data is never saved.",
   applicationName: "Roastube",
 };
 
@@ -39,7 +40,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${nunito.variable} ${roboto.variable}`}>
-      <body className="flex min-h-dvh flex-col">{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

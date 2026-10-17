@@ -52,7 +52,7 @@ export function Hero() {
           <Suspense fallback={<StaticSignInForm />}>
             <SignInForm />
           </Suspense>
-          <p className="font-rounded text-sm font-semibold text-muted">Read-only. Nothing is saved.</p>
+          <p className="font-rounded text-sm font-semibold text-muted">Read-only. Your data is never saved.</p>
         </div>
       </div>
 
