@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
+import { SignOutIfSignedIn } from "@/components/auth/SessionLinks";
 import { CrispyTile } from "@/components/brand/CrispyMark";
 
 export function SiteHeader({ children }: { children?: ReactNode }) {
@@ -18,6 +19,9 @@ export function SiteHeader({ children }: { children?: ReactNode }) {
             <Link href="/privacy" className="link">
               Privacy
             </Link>
+            <Suspense fallback={null}>
+              <SignOutIfSignedIn />
+            </Suspense>
           </>
         )}
       </nav>

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import { SignInForm, StaticSignInForm } from "@/components/auth/SignInForm";
+import { StaticSignInForm } from "@/components/auth/SignInForm";
 import { SignInNotice } from "@/components/auth/SignInNotice";
+import { RoastLinkOrSignIn } from "@/components/auth/SessionLinks";
 import { CrispyTile } from "@/components/brand/CrispyMark";
 import { Crispy } from "@/components/crispy/Crispy";
 import {
@@ -50,7 +51,7 @@ export function Hero() {
         </Suspense>
         <div className="mt-8 flex flex-col items-center gap-3">
           <Suspense fallback={<StaticSignInForm />}>
-            <SignInForm />
+            <RoastLinkOrSignIn />
           </Suspense>
           <p className="font-rounded text-sm font-semibold text-muted">Read-only. Your data is never saved.</p>
         </div>

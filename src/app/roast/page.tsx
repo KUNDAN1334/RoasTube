@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { auth } from "@/auth";
 import { SignOutButton } from "@/components/auth/SignOutButton";
@@ -19,6 +20,8 @@ async function RoastGate() {
   if (isDemoMode()) {
     return <RoastExperience viewerKey="demo" demo />;
   }
+  // Auth.js draws random values before reading the cookie; Next only allows that at request time.
+  await connection();
   const session = await auth();
   if (!session?.viewerKey) redirect("/?signin=required&next=/roast");
   return <RoastExperience viewerKey={session.viewerKey} demo={false} />;
