@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Nuclear mode",
   description:
     "Roast your full YouTube watch and search history using a Google Takeout export. Files are read in your browser and never uploaded.",
+  alternates: { canonical: "/nuclear" },
 };
 
 const STEPS = [

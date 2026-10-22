@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Nunito, Roboto } from "next/font/google";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
 // Inter stands in for SF Pro on devices that don't have it; Nunito for SF Pro Rounded.
@@ -22,7 +23,9 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
+// Each public page sets its own canonical; setting one here would leak "/" onto every page.
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
   title: {
     default: "Roastube: your YouTube taste, roasted",
     template: "%s · Roastube",

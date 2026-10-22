@@ -6,6 +6,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Terms of service",
   description: "The rules for using Roastube.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

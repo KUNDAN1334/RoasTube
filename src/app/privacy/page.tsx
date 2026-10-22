@@ -5,6 +5,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Privacy policy",
   description: "What Roastube reads, what it sends to the AI, and what it keeps (none of your data).",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
