@@ -5,5 +5,5 @@ export const SITE = {
   /** The one public address; canonical links, robots.txt and the sitemap all point here. */
   url: "https://roastube.lol",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "privacy@example.com",
-  policyUpdated: "October 17, 2026",
+  policyUpdated: "October 22, 2026",
 };

@@ -155,6 +155,47 @@ export default function PrivacyPage() {
         , including the Limited Use requirements.
       </p>
 
+      <h2>How we protect your data</h2>
+      <p>We treat your Google user data as confidential and protect it with these safeguards:</p>
+      <ul>
+        <li>
+          <strong>Encryption in transit:</strong> Roastube is served only over HTTPS, and plain
+          HTTP is redirected to HTTPS. Our server also uses encrypted HTTPS connections to reach
+          the YouTube Data API, the Gemini API and our rate-limit database.
+        </li>
+        <li>
+          <strong>Encrypted session:</strong> your sign-in cookie is encrypted with AES-256 using a
+          secret only our server knows, so it can&apos;t be read or changed by anyone else. It is
+          marked HttpOnly and Secure: scripts on the page can&apos;t read it, and it&apos;s only
+          sent over HTTPS.
+        </li>
+        <li>
+          <strong>The access token stays on our server:</strong> your Google access token is used
+          only by our server to call YouTube. It is never sent to the page, written to logs or
+          shared. Sessions end after 55 minutes, and we never ask for a long-lived refresh token.
+        </li>
+        <li>
+          <strong>Least privilege:</strong> we ask only for read-only YouTube access
+          (<code>youtube.readonly</code>), so Roastube can&apos;t change anything in your account.
+        </li>
+        <li>
+          <strong>Data minimization:</strong> your YouTube data is processed in memory for the one
+          request that makes your roast, then discarded. It is never written to a database or our
+          logs. Only a summary goes to the AI, without your name, email or channel ID, and titles
+          on sensitive topics are removed first.
+        </li>
+        <li>
+          <strong>One-way hashing:</strong> where we need to tell accounts apart (the daily roast
+          limit and usage counts), we store only a SHA-256 hash of your Google account ID, never
+          the ID itself.
+        </li>
+        <li>
+          <strong>Restricted access:</strong> API keys and secrets are kept in our host&apos;s
+          encrypted environment settings and never reach the browser. Only the Roastube developer
+          can access our hosting, database and API accounts.
+        </li>
+      </ul>
+
       <h2>How to revoke access</h2>
       <p>
         Sign out of Roastube at any time. To remove Roastube&apos;s access completely, go to your
